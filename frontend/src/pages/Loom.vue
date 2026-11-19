@@ -38,13 +38,18 @@ onMounted(load)
 
     <section class="panel">
       <h1>会话织机</h1>
-      <p class="muted">基座按访客整段挂会话；空闲切窗由空桩功能题实现。</p>
+      <p class="muted">活动码变更即强制切段（不受空闲超时约束）；活动码未变时按空闲超时规则并段。</p>
       <div class="lane-list">
         <article v-for="s in sessions" :key="s.id" class="lane">
           <div class="lane-head">
             <div>
               <strong>{{ s.id }}</strong>
               <span class="muted"> · {{ s.visitor_id }} · {{ s.status }}</span>
+              <span
+                class="campaign-chip"
+                :class="{ empty: s.campaign_code === null || s.campaign_code === undefined }"
+                :title="`会话绑定活动码：${s.campaign_code || '空'}`"
+              >活动码 {{ s.campaign_code || '∅' }}</span>
             </div>
             <span class="mono">{{ s.hit_count }} 点 · {{ s.started_at }} → {{ s.ended_at || '…' }}</span>
           </div>
@@ -54,6 +59,7 @@ onMounted(load)
               <span class="hit-bead">
                 <strong>{{ h.event_name }}</strong>
                 <span>{{ h.page_path }}</span>
+                <em class="bead-campaign">{{ h.campaign_id || '∅' }}</em>
               </span>
             </template>
           </div>

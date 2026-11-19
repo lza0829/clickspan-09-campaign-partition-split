@@ -23,7 +23,7 @@ async function run() {
 <template>
   <section class="panel">
     <h1>收流击点</h1>
-    <p class="muted">读取夹具 ingest_batch.json，灌入正式通道（基座不做空闲切窗）。</p>
+    <p class="muted">读取夹具 ingest_batch.json 灌入正式通道；活动码变更同事务收口旧段并起新段，提交前过活动分区核证。</p>
     <button class="btn" :disabled="busy" @click="run">{{ busy ? '收流中…' : '跑一批收流' }}</button>
     <p v-if="err" class="err">{{ err }}</p>
     <pre v-if="result" class="mono">{{ result }}</pre>

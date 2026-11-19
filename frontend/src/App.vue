@@ -33,6 +33,7 @@ onMounted(async () => {
         <router-link to="/ingest">收流</router-link>
         <router-link to="/quarantine">搁置</router-link>
         <router-link to="/proofs">核证</router-link>
+        <router-link to="/campaign">活动分区</router-link>
         <router-link to="/settings">切窗</router-link>
       </nav>
     </header>

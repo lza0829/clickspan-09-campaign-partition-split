@@ -21,5 +21,9 @@ export const api = {
   ingest: () => req('/api/ingest/run', { method: 'POST' }),
   proofs: (sessionId) =>
     req(sessionId ? `/api/session-proofs?session_id=${encodeURIComponent(sessionId)}` : '/api/session-proofs'),
+  campaignEdges: (visitorId) =>
+    req(visitorId ? `/api/campaign/edges?visitor_id=${encodeURIComponent(visitorId)}` : '/api/campaign/edges'),
+  campaignAudit: (visitorId) =>
+    req(visitorId ? `/api/campaign/audit?visitor_id=${encodeURIComponent(visitorId)}` : '/api/campaign/audit'),
   settings: () => req('/api/settings'),
 }

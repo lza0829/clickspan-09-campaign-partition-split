@@ -231,3 +231,28 @@ table.data th { color: var(--muted); font-weight: 500; }
 
 .err { color: var(--danger); }
 .ok { color: var(--cyan); }
+
+/* 活动分区标签 */
+.campaign-chip {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  background: var(--copper-soft);
+  border: 1px solid var(--copper);
+  color: var(--char);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  vertical-align: middle;
+}
+.campaign-chip.empty {
+  background: transparent;
+  border-color: var(--line);
+  color: var(--muted);
+}
+.bead-campaign {
+  font-style: normal;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  color: var(--copper);
+}

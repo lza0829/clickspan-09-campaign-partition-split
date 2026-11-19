@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# 本地 SQLite 数据
+backend/data/
+*.db
+
+# Node / 前端构建
+node_modules/
+dist/

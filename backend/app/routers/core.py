@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 
 from app.db import connect
+from app.modules import campaign_partition_split as cps
 from app.seed import idle_timeout_sec
 from app.services import ingest as ingest_svc
 from app.services import sessions as sess_svc
@@ -19,6 +20,9 @@ def overview():
                 "SELECT COUNT(*) AS c FROM hits WHERE channel='primary'"
             ).fetchone()["c"],
             "quarantine": conn.execute("SELECT COUNT(*) AS c FROM quarantine").fetchone()["c"],
+            "campaign_edges": conn.execute(
+                "SELECT COUNT(*) AS c FROM campaign_partition_edges"
+            ).fetchone()["c"],
             "idle_timeout_sec": idle_timeout_sec(conn),
         }
     finally:
@@ -89,6 +93,30 @@ def session_proofs(session_id: str | None = None):
                 "SELECT * FROM session_proofs ORDER BY id DESC LIMIT 50"
             ).fetchall()
         return [dict(r) for r in rows]
+    finally:
+        conn.close()
+
+
+@router.get("/campaign/edges")
+def campaign_edges(visitor_id: str | None = None, session_id: str | None = None):
+    """只读：活动分区边（旧段/新段/前后活动码/触发击点）。"""
+    conn = connect()
+    try:
+        return cps.list_edges(conn, visitor_id=visitor_id, session_id=session_id)
+    finally:
+        conn.close()
+
+
+@router.get("/campaign/audit")
+def campaign_audit(visitor_id: str | None = None):
+    """只读：活动分区核证——会话绑定活动码 vs 成员击点 campaign_id 集合。"""
+    conn = connect()
+    try:
+        rows = cps.audit_all(conn, visitor_id=visitor_id)
+        return {
+            "ok": all(r["consistent"] for r in rows),
+            "sessions": rows,
+        }
     finally:
         conn.close()
 
